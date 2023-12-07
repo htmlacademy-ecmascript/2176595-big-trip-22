@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Darina Smorkalova](https://up.htmlacademy.ru/ecmascript/22/user/2176595).
-* Наставник: `Неизвестно`.
+* Наставник: [Анастасия Гущина] (https://htmlacademy.ru/profile/vanastasiya).
 
 ---
 
