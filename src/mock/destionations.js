@@ -1,4 +1,4 @@
-const destinations = [
+const destinationsMock = [
   {
     id: 'a68720f8-ce39-4ed3-898d-ea9f50c0afec',
     description: '',
@@ -123,4 +123,4 @@ const destinations = [
   }
 ];
 
-export { destinations };
+export { destinationsMock };

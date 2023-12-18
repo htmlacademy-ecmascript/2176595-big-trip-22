@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 const DATE_FORMAT = {
-  datMonth: 'D MMM',
+  dateMonth: 'D MMM',
   yearMonthDay: 'YYYY-MM-D',
   time: 'HH:mm',
   fullDate: 'DD/MM/YY HH:mm',

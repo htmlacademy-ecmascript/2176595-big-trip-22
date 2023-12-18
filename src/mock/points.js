@@ -1,4 +1,4 @@
-const points = [
+const pointsMock = [
   {
     id: 'db3a3f81-aecd-4fca-bccf-1fbd26dd911b',
     basePrice: 5232,
@@ -310,4 +310,4 @@ const points = [
   }
 ];
 
-export { points };
+export { pointsMock };

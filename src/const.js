@@ -16,4 +16,4 @@ const SortType = {
   OFFERS: 'offers'
 };
 
-
+export { EVENT_TYPES, SortType, TripsFilter };
