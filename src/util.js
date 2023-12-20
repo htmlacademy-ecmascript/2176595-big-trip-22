@@ -1,5 +1,8 @@
 import dayjs from 'dayjs';
 
+const MS_IN_DAY = 86400000;
+const MS_IN_HOUR = 3600000;
+
 const DATE_FORMAT = {
   dateMonth: 'D MMM',
   yearMonthDay: 'YYYY-MM-D',
@@ -13,14 +16,22 @@ function getRandomArrayElement(items) {
 
 //приводит время к адекватному формату
 
-function humanizeTaskDueDate(dueDate) {
-  return dueDate ? dayjs(dueDate).format(DATE_FORMAT) : '';
+function humanizePointDate(dueDate, dateFormat) {
+  return dueDate ? dayjs(dueDate).format(dateFormat) : '';
 }
 
 //продолжительнось поездки
 
 function calculateDuration(startDate, endDate) {
-  return dayjs(endDate).diff(startDate, 'mm');
+  const timeDuration = dayjs(endDate).diff(startDate);
+  let timeFormat = 'DD[D] HH[H] mm[M]';
+  if (timeDuration < MS_IN_DAY) {
+    timeFormat = 'HH[H] mm[M]';
+  }
+  if (timeDuration < MS_IN_HOUR) {
+    timeFormat = 'mm[M]';
+  }
+  return dayjs(timeDuration).format(timeFormat);
 }
 
-export { getRandomArrayElement, humanizeTaskDueDate, calculateDuration, DATE_FORMAT };
+export { getRandomArrayElement, humanizePointDate, calculateDuration, DATE_FORMAT };

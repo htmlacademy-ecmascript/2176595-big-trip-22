@@ -18,7 +18,12 @@ destinationsModel.init();
 offersModel.init();
 pointsModel.init();
 
-const tripPresenter = new TripPresenter({pointsContainer: tripEventsElement, destinationsModel: DestinationsModel, offersModel: OffersModel, pointsModel: PointsModel });
+const tripPresenter = new TripPresenter({
+  pointsContainer: tripEventsElement,
+  destinationsModel,
+  offersModel,
+  pointsModel
+});
 
 render(new TripView(), mainHeaderTripElement, RenderPosition.AFTERBEGIN);
 render(new FilterView(), mainHeaderFilters, RenderPosition.BEFOREEND);

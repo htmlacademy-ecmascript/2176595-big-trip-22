@@ -7,7 +7,7 @@ export default class OffersModel {
   }
 
   init() {
-    this.points = offersMock;
+    this.offers = offersMock;
   }
 
   getOffers() {
@@ -18,9 +18,9 @@ export default class OffersModel {
     return this.offers.find((offer) => offer.type === type).offers;
   }
 
-  // getOffersById(type, itemsId) {
-  //   const offersType = this.getOffersByType(type);
+  getOffersById(type, itemIds) {
+    const offersType = this.getOffersByType(type);
 
-  //   return offersType.offers.filter((item) => itemsId.find((id) => item.id) === id);
-  // }
+    return offersType.filter((item) => itemIds.includes(item.id));
+  }
 }

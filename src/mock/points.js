@@ -20,7 +20,7 @@ const pointsMock = [
     dateFrom: '2023-12-06T08:36:04.701Z',
     dateTo: '2023-12-07T06:01:04.701Z',
     destination: '3fe95771-be9c-4f32-a850-f4ecf2907f77',
-    isFavorite: true,
+    isFavorite: false,
     offers: [
       '5d04657e-be30-4db7-b3ea-e961c94ceed4',
       'fcb41394-879a-4de4-afa7-a4ca4a0288c7',

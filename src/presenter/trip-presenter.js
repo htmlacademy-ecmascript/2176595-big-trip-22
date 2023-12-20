@@ -19,24 +19,26 @@ export default class TripPresenter {
   init() {
     this.tripPoints = [...this.pointsModel.getPoints()];
     render(this.pointsListComponent, this.pointsContainer);
-    render(new SortForm(), this.pointsListComponent);
+    render(new SortForm(), this.pointsListComponent.getElement());
 
     render(new EditPointView({
-      points: this.points[0],
+      point: this.tripPoints[0],
       checkedOffers: [...this.offersModel.getOffersById(this.tripPoints[0].type, this.tripPoints[0].offers)],
       offers: this.offersModel.getOffersByType(this.tripPoints[0].type),
-      destinations: this.destinationsModel.getDestinationsById(this.tripPoints[0].destination),
+      destination: this.destinationsModel.getDestinationsById(this.tripPoints[0].destination),
+      allOffers: this.offersModel.getOffers(),
+      allDestinations: this.destinationsModel.getDestinations(),
 
-    }), this.pointsLIstComponent.getElement());
+    }), this.pointsListComponent.getElement());
 
 
     //render(new AddPoint(), this.pointsListComponent.getElement());
 
     for (let i = 0; i < 3; i++) {
       render(new PointView({
-        points: this.pointsModel[i],
-        offers: this.offersModel.getOffersByType(this.tripPoints[0].type),
-        destinations: this.destinationsModel.getDestinationsById(this.tripPoints[0].destination),
+        point: this.tripPoints[i],
+        offers: this.offersModel.getOffersById(this.tripPoints[i].type, this.tripPoints[i].offers),
+        destination: this.destinationsModel.getDestinationsById(this.tripPoints[0].destination),
       }), this.pointsListComponent.getElement());
     }
   }

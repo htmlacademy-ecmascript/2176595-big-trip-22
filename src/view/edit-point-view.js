@@ -1,12 +1,11 @@
 import {createElement} from '../render.js';
-import { EVENT_TYPES } from '../const.js';
-import { humanizeTaskDueDate } from '../util.js';
+import { DATE_FORMAT, humanizePointDate } from '../util.js';
 
-function createOfferTypeTemplate(id, type) {
+function createOfferTypeTemplate(id, type, pointType) {
   return(`
   <div class="event__type-item">
-  <input id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-  <label class="event__type-label  event__type-label--${type}}" for="event-type-${type}}-${id}">Restaurant</label>
+  <input ${type === pointType ? 'checked' : ''} id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
+  <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-${id}">${type}</label>
 </div>
   `);
 }
@@ -64,8 +63,8 @@ function createPhotoContainerTemplate(pictures) {
   return '';
 }
 
-function createDestinationsTemplate(destinations) {
-  const { description, pictures } = destinations;
+function createDestinationsTemplate(destination) {
+  const { description, pictures } = destination;
   if(description > 0 || pictures.length > 0) {
     return (`
     <section class="event__section  event__section--destination">
@@ -79,10 +78,9 @@ function createDestinationsTemplate(destinations) {
   return '';
 }
 
-function createEditPointTemplate(points, offers, destinations, checkedOffers) {
-  const { type, dateFrom, dateTo, basePrice } = points;
-  const { name,id } = destinations;
-
+function createEditPointTemplate({destination, point, offers, checkedOffers, allOffers, allDestinations}) {
+  const { id: pointId, type, dateFrom, dateTo, basePrice } = point;
+  const { name, id } = destination;
 
   return (
     ` <li class="trip-events__item">
@@ -97,7 +95,7 @@ function createEditPointTemplate(points, offers, destinations, checkedOffers) {
           <div class="event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Event type</legend>
-              ${EVENT_TYPES.map((item) => createOfferTypeTemplate(item).join(''))}
+              ${allOffers.map((item) => item.type).map((item) => createOfferTypeTemplate(pointId, item)).join('')}
             </fieldset>
           </div>
         </div>
@@ -107,24 +105,22 @@ function createEditPointTemplate(points, offers, destinations, checkedOffers) {
           </label>
           <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${name}" list="destination-list-${id}">
           <datalist id="destination-list-${id}">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="Chamonix"></option>
+          ${allDestinations.map(({name: destinationName}) => `<option value="${destinationName}"></option>`)}
           </datalist>
         </div>
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-${id}">From</label>
-          <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value=${humanizeTaskDueDate(dateFrom)}>
+          <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${humanizePointDate(dateFrom, DATE_FORMAT.fullDate)}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-${id}">To</label>
-          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value=${humanizeTaskDueDate(dateTo)}">
+          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${humanizePointDate(dateTo, DATE_FORMAT.fullDate)}">
         </div>
         <div class="event__field-group  event__field-group--price">
           <label class="event__label" for="event-price-${id}">
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${basePrice}>
+          <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${basePrice}">
         </div>
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
@@ -134,7 +130,7 @@ function createEditPointTemplate(points, offers, destinations, checkedOffers) {
       </header>
       <section class="event__details">
        ${createOfferListTemplate(offers, checkedOffers)}
-       ${createDestinationsTemplate(destinations)}
+       ${createDestinationsTemplate(destination)}
       </section>
     </form>
   </li>`
@@ -143,15 +139,24 @@ function createEditPointTemplate(points, offers, destinations, checkedOffers) {
 
 export default class EditPointView {
 
-  constructor({ DestinationsModel, OffersModel, PointsModel, checkedOffers }) {
-    this.destinations = DestinationsModel;
-    this.offers = OffersModel;
-    this.points = PointsModel;
+  constructor({ destination, offers, point, checkedOffers, allOffers, allDestinations }) {
+    this.destination = destination;
+    this.offers = offers;
+    this.point = point;
     this.checkedOffers = checkedOffers;
+    this.allOffers = allOffers;
+    this.allDestinations = allDestinations;
   }
 
   getTemplate() {
-    return createEditPointTemplate(this.points, this.destinations, this.offers);
+    return createEditPointTemplate({
+      destination: this.destination,
+      offers: this.offers,
+      point: this.point,
+      checkedOffers: this.checkedOffers,
+      allOffers: this.allOffers,
+      allDestinations: this.allDestinations,
+    });
   }
 
   getElement() {
