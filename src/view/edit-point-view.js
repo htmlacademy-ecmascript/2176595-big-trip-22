@@ -1,5 +1,5 @@
-import {createElement} from '../render.js';
 import { DATE_FORMAT, humanizePointDate } from '../util.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 function createOfferTypeTemplate(id, type, pointType) {
   return(`
@@ -137,37 +137,51 @@ function createEditPointTemplate({destination, point, offers, checkedOffers, all
   );
 }
 
-export default class EditPointView {
+export default class EditPointView extends AbstractView {
+  #destination = null;
+  #offers = null;
+  #point = null;
+  #checkedOffers = null;
+  #allOffers = null;
+  #allDestinations = null;
+  #onResetClick = null;
+  #onPointEditSubmit = null;
 
-  constructor({ destination, offers, point, checkedOffers, allOffers, allDestinations }) {
-    this.destination = destination;
-    this.offers = offers;
-    this.point = point;
-    this.checkedOffers = checkedOffers;
-    this.allOffers = allOffers;
-    this.allDestinations = allDestinations;
+
+  constructor({ destination, offers, point, checkedOffers, allOffers, allDestinations, onPointEditSubmit , onResetClick }) {
+    super();
+    this.#destination = destination;
+    this.#offers = offers;
+    this.#point = point;
+    this.#checkedOffers = checkedOffers;
+    this.#allOffers = allOffers;
+    this.#allDestinations = allDestinations;
+    this.#onResetClick = onResetClick;
+    this.#onPointEditSubmit = onPointEditSubmit;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#resetButtonClickHandler);
+    this.element.querySelector('form').addEventListener('submit', this.#PointEditSubmitHandler);
   }
 
-  getTemplate() {
+  #resetButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onResetClick();
+  };
+
+  #PointEditSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#onPointEditSubmit();
+  };
+
+
+  get template() {
     return createEditPointTemplate({
-      destination: this.destination,
-      offers: this.offers,
-      point: this.point,
-      checkedOffers: this.checkedOffers,
-      allOffers: this.allOffers,
-      allDestinations: this.allDestinations,
+      destination: this.#destination,
+      offers: this.#offers,
+      point: this.#point,
+      checkedOffers: this.#checkedOffers,
+      allOffers: this.#allOffers,
+      allDestinations: this.#allDestinations,
     });
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
 }
