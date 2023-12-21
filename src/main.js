@@ -1,10 +1,11 @@
-import { RenderPosition, render } from './render.js';
+//import { RenderPosition, render } from './render.js';
 import FilterView from './view/filter-form-view.js';
 import TripView from './view/trip-form-view.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import DestinationsModel from './model/destination-model.js';
 import PointsModel from './model/point-model.js';
 import OffersModel from './model/offer-model.js' ;
+import { render, RenderPosition } from './framework/render.js';
 
 const pageMainHeader = document.querySelector('.page-header');
 const mainHeaderTripElement = pageMainHeader.querySelector('.trip-main');
